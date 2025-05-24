@@ -5,31 +5,12 @@ import Sidebar from "./components/sidebar";
 import Map from "./components/map";
 import PanicButton from "./components/panicmodal";
 import "./index.css";
+import Registro from './components/Registro';
 
 function App() {
   const [selectedStreet, setSelectedStreet] = useState(null);
   const [showSidebar, setShowSidebar] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [logueado, setLogueado] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-
-  useEffect(() => {
-    const yaLogueado = localStorage.getItem("logueado");
-    if (yaLogueado === "true") {
-      setLogueado(true);
-    }
-  }, []);
-
-  const manejarLogin = () => {
-    localStorage.setItem("logueado", "true");
-    setLogueado(true);
-    setShowLoginModal(false);
-  };
-
-  const manejarLogout = () => {
-    localStorage.removeItem("logueado");
-    setLogueado(false);
-  };
 
   const handleStreetSelect = (street) => {
     setLoading(true);
@@ -52,20 +33,8 @@ function App() {
   };
 
   return (
-    <div className="main-container relative">
-      {showLoginModal && (
-        <div className="login-overlay">
-          <Login onLogin={manejarLogin} />
-        </div>
-      )}
-
-      <div className={`app-content ${showLoginModal ? "blurred" : ""}`}>
-        <Navbar
-          onLogout={manejarLogout}
-          isLoggedIn={logueado}
-          onLoginClick={abrirLoginDesdeMenu}
-          onProfileClick={verPerfil}
-        />
+    <div className="main-container">
+      <Navbar />
 
         <div className="content-area">
           {loading && (
@@ -97,14 +66,13 @@ function App() {
           </div>
         </div>
 
-        <PanicButton
-          onReportSubmit={(risk) => {
-            if (selectedStreet) {
-              setSelectedStreet({ ...selectedStreet, risk });
-            }
-          }}
-        />
-      </div>
+      <PanicButton
+        onReportSubmit={(risk) => {
+          if (selectedStreet) {
+            setSelectedStreet({ ...selectedStreet, risk });
+          }
+        }}
+      />
     </div>
   );
 }
