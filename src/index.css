@@ -345,3 +345,71 @@ body {
 #panicModal button {
   margin-top: 0.5rem;
 }
+
+
+
+
+.login-container {
+  background: #0f1c2e;
+  padding: 30px;
+  border-radius: 20px; /* MÁS REDONDO */
+  width: 300px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  color: white;
+}
+
+.login-container h2 {
+  margin-bottom: 20px;
+  color: white;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 15px; /* MÁS REDONDO */
+  background-color: white;
+  color: #000;
+}
+
+.login-container button {
+  width: 100%;
+  padding: 10px;
+  background-color: #e94560;
+  border: none;
+  border-radius: 15px; /* MÁS REDONDO */
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+/* Desenfoque al fondo cuando no está logueado */
+.blurred {
+  filter: blur(6px);
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.6;
+}
+
+
+
+.user-menu-btn {
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.user-menu-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.user-menu-btn.logout {
+  color: red;
+}

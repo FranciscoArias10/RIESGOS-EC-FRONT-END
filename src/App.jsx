@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import Navbar from "./components/navbar";
+import React, { useState, useEffect } from "react";
+import Login from "./components/login/login";
+import Navbar from "./components/Navbar";
 import Sidebar from "./components/sidebar";
 import Map from "./components/map";
 import PanicButton from "./components/panicmodal";
@@ -9,10 +10,29 @@ function App() {
   const [selectedStreet, setSelectedStreet] = useState(null);
   const [showSidebar, setShowSidebar] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [logueado, setLogueado] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  useEffect(() => {
+    const yaLogueado = localStorage.getItem("logueado");
+    if (yaLogueado === "true") {
+      setLogueado(true);
+    }
+  }, []);
+
+  const manejarLogin = () => {
+    localStorage.setItem("logueado", "true");
+    setLogueado(true);
+    setShowLoginModal(false);
+  };
+
+  const manejarLogout = () => {
+    localStorage.removeItem("logueado");
+    setLogueado(false);
+  };
 
   const handleStreetSelect = (street) => {
     setLoading(true);
-    // Simular tiempo de carga
     setTimeout(() => {
       setSelectedStreet(street);
       setLoading(false);
@@ -23,47 +43,68 @@ function App() {
     setShowSidebar(!showSidebar);
   };
 
+  const abrirLoginDesdeMenu = () => {
+    setShowLoginModal(true);
+  };
+
+  const verPerfil = () => {
+    alert("Funcionalidad de 'Ver Perfil' aún no implementada.");
+  };
+
   return (
-    <div className="main-container">
-      <Navbar />
+    <div className="main-container relative">
+      {showLoginModal && (
+        <div className="login-overlay">
+          <Login onLogin={manejarLogin} />
+        </div>
+      )}
 
-      <div className="content-area">
-        {loading && (
-          <div className="loading-overlay" id="loadingOverlay">
-            <div className="loader"></div>
-          </div>
-        )}
+      <div className={`app-content ${showLoginModal ? "blurred" : ""}`}>
+        <Navbar
+          onLogout={manejarLogout}
+          isLoggedIn={logueado}
+          onLoginClick={abrirLoginDesdeMenu}
+          onProfileClick={verPerfil}
+        />
 
-        <button className="mobile-toggle" onClick={toggleSidebar}>
-          <i className="fas fa-bars"></i>
-        </button>
+        <div className="content-area">
+          {loading && (
+            <div className="loading-overlay" id="loadingOverlay">
+              <div className="loader"></div>
+            </div>
+          )}
 
-        {showSidebar && (
-          <Sidebar
-            selectedStreet={selectedStreet}
-            onStreetSelect={handleStreetSelect}
-          />
-        )}
+          <button className="mobile-toggle" onClick={toggleSidebar}>
+            <i className="fas fa-bars"></i>
+          </button>
 
-        <div id="map-container" className="bg-red-500">
-          <Map onStreetSelect={handleStreetSelect} />
-          <div className="date-indicator">
-            <i className="fas fa-calendar-alt"></i>{" "}
-            <span>{new Date().toLocaleDateString("es-ES")}</span>
-            <span className="data-update-badge">
-              <i className="fas fa-sync-alt"></i> Actualizado
-            </span>
+          {showSidebar && (
+            <Sidebar
+              selectedStreet={selectedStreet}
+              onStreetSelect={handleStreetSelect}
+            />
+          )}
+
+          <div id="map-container" className="bg-red-500">
+            <Map onStreetSelect={handleStreetSelect} />
+            <div className="date-indicator">
+              <i className="fas fa-calendar-alt"></i>{" "}
+              <span>{new Date().toLocaleDateString("es-ES")}</span>
+              <span className="data-update-badge">
+                <i className="fas fa-sync-alt"></i> Actualizado
+              </span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <PanicButton
-        onReportSubmit={(risk) => {
-          if (selectedStreet) {
-            setSelectedStreet({ ...selectedStreet, risk });
-          }
-        }}
-      />
+        <PanicButton
+          onReportSubmit={(risk) => {
+            if (selectedStreet) {
+              setSelectedStreet({ ...selectedStreet, risk });
+            }
+          }}
+        />
+      </div>
     </div>
   );
 }
