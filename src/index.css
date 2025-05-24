@@ -413,3 +413,6 @@ body {
 .user-menu-btn.logout {
   color: red;
 }
+.custom-rounded {
+  border-radius: 15px; 
+}

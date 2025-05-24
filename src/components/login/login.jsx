@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import Registro from "../Register/Registro"; 
 import "./login.css";
 
 const Login = ({ onLogin, onBack }) => {
   const [correo, setCorreo] = useState("");
   const [contrasena, setContrasena] = useState("");
   const [error, setError] = useState("");
+  const [mostrarRegistro, setMostrarRegistro] = useState(false); 
 
   const handleLogin = () => {
     if (correo === "admin@riesgos.com" && contrasena === "123456") {
@@ -16,19 +18,22 @@ const Login = ({ onLogin, onBack }) => {
     }
   };
 
-  // Función para volver a Home si no usas React Router
   const handleBack = () => {
     if (onBack) {
       onBack();
     } else {
-      window.location.href = "/"; // Cambia "/" por tu ruta home real
+      window.location.href = "/";
     }
   };
+
+  // Si está en modo registro, mostrar ese componente
+  if (mostrarRegistro) {
+    return <Registro onVolverLogin={() => setMostrarRegistro(false)} />;
+  }
 
   return (
     <div className="login-overlay">
       <div className="login-container">
-        {/* Icono en esquina izquierda */}
         <div className="back-icon" onClick={handleBack} title="Volver a Home">
           <FontAwesomeIcon icon={faArrowLeft} />
         </div>
@@ -51,7 +56,7 @@ const Login = ({ onLogin, onBack }) => {
             ¿No tienes cuenta?{" "}
             <span
               className="login-link"
-              onClick={() => alert("Ir a registro (aún no implementado)")}
+              onClick={() => setMostrarRegistro(true)} 
             >
               Registrarse
             </span>
