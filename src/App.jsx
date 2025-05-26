@@ -55,10 +55,7 @@ function App() {
     <div className="main-container relative">
       {showLoginModal && (
         <div className="login-overlay">
-          <Login
-            onLogin={manejarLogin}
-            onBack={() => setShowLoginModal(false)}
-          />
+          <Login onLogin={manejarLogin} />
         </div>
       )}
 
@@ -90,8 +87,23 @@ function App() {
 
           <div id="map-container" className="bg-red-500">
             <Map onStreetSelect={handleStreetSelect} />
+            <div className="date-indicator">
+              <i className="fas fa-calendar-alt"></i>{" "}
+              <span>{new Date().toLocaleDateString("es-ES")}</span>
+              <span className="data-update-badge">
+                <i className="fas fa-sync-alt"></i> Actualizado
+              </span>
+            </div>
           </div>
         </div>
+
+        <PanicButton
+          onReportSubmit={(risk) => {
+            if (selectedStreet) {
+              setSelectedStreet({ ...selectedStreet, risk });
+            }
+          }}
+        />
       </div>
     </div>
   );
