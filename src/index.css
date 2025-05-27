@@ -14,7 +14,9 @@ body {
   color: var(--text-light);
   margin: 0;
   padding: 0;
+  
 }
+
 
 .main-container {
   display: flex;
@@ -347,12 +349,12 @@ body {
 }
 
 
-
+/*COMIENZO DE CSS DE LOGIN*/
 
 .login-container {
   background: #0f1c2e;
   padding: 30px;
-  border-radius: 20px; /* MÁS REDONDO */
+  border-radius: 20px; 
   width: 300px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   text-align: center;
@@ -369,7 +371,7 @@ body {
   padding: 10px;
   margin: 8px 0;
   border: 1px solid #ccc;
-  border-radius: 15px; /* MÁS REDONDO */
+  border-radius: 15px; 
   background-color: white;
   color: #000;
 }
@@ -379,14 +381,14 @@ body {
   padding: 10px;
   background-color: #e94560;
   border: none;
-  border-radius: 15px; /* MÁS REDONDO */
+  border-radius: 15px; 
   color: white;
   font-weight: bold;
   cursor: pointer;
 }
 
 
-/* Desenfoque al fondo cuando no está logueado */
+
 .blurred {
   filter: blur(6px);
   pointer-events: none;
