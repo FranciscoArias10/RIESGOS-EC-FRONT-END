@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-
+import Input from "../UI/Input";
+import Botones from '../UI/Botones'
 const Registro = ({ onVolverLogin }) => {
   const [formData, setFormData] = useState({
     nombre: "",
@@ -41,63 +42,22 @@ const Registro = ({ onVolverLogin }) => {
         <h1 className="text-3xl font-bold text-center">REGÍSTRATE</h1>
         <p className="text-center text-sm mb-6">para continuar a Riesgos Ec.</p>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <input
-            className="rounded-full p-2 bg-gray-200 text-gray-700 placeholder-gray-500"
-            type="text"
-            name="nombre"
-            placeholder="Ingresa tu nombre"
-            onChange={handleChange}
-          />
-          <input
-            className="rounded-full p-2 bg-gray-200 text-gray-700 placeholder-gray-500"
-            type="text"
-            name="apellido"
-            placeholder="Ingresa tu apellido"
-            onChange={handleChange}
-          />
-          <input
-            className="rounded-full p-2 bg-gray-200 text-gray-700 placeholder-gray-500"
-            type="email"
-            name="correo"
-            placeholder="Ingresar correo electronico"
-            onChange={handleChange}
-          />
-          <input
-            className="rounded-full p-2 bg-gray-200 text-gray-700 placeholder-gray-500"
-            type="password"
-            name="contrasena"
-            placeholder="Ingresar contraseña"
-            onChange={handleChange}
-          />
-          <input
-            className="rounded-full p-2 bg-gray-200 text-gray-700 placeholder-gray-500"
-            type="password"
-            name="confirmarContrasena"
-            placeholder="Confirmar contraseña"
-            onChange={handleChange}
-          />
-          <input
-            className="rounded-full p-2 bg-gray-200 text-gray-700 placeholder-gray-500"
-            type="date"
-            name="ingresafechanac"
-            placeholder="Fecha de nacimiento : DD/MM/AA"
-            onChange={handleChange}
-          />
-          <input
-            className="rounded-full p-2 bg-gray-200 text-gray-700 placeholder-gray-500"
-            type="text"
-            name="calle"
-            placeholder="Ingresa la calle donde vives "
-            onChange={handleChange}
-          />
+        <form  onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <Input type='text' name='nombre' placeholder='Ingresa tu nombre' onChange={handleChange}/>
 
-          <button
-            type="submit"
-            className="custom-rounded bg-[#f43f5e] text-white font-semibold py-3 hover:bg-pink-600 transition"
-          >
-            REGISTRARSE
-          </button>
+          <Input type="text" name="apellido" placeholder="Ingresa tu apellido" onChange={handleChange}/>
+
+          <Input type='email' name='correo' placeholder='Ingresa correo electronico' onChange={handleChange}/>
+
+          <Input type='password' name='contraseña' placeholder='Ingresa contraseña' onChange={handleChange}/>
+
+          <Input type='password' name='Confirmar_contraseña' placeholder='Confirma tu contraseña' onChange={handleChange}/>
+
+          <Input label='fecha de nacimiento' type='date' onChange={handleChange}/>
+
+          <Input type='text' name='calle' placeholder='Ingresa la calle donde vives' onChange={handleChange}/>
+
+          <Botones >Registrarse</Botones>
         </form>
       </div>
     </div>
