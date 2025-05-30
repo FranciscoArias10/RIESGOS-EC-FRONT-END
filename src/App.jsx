@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Login from "./components/login/login";
-import Navbar from "./components/Navbar";
-import Sidebar from "./components/sidebar";
-import Map from "./components/map";
-import PanicButton from "./components/panicmodal";
+import Navbar from "./components/UI/Navbar";
+import Sidebar from "./components/UI/sidebar";
+import Map from "./components/map/map";
+import PanicButton from "./components/UI/panicmodal";
 import "./index.css";
 
 function App() {
@@ -51,6 +51,11 @@ function App() {
     alert("Funcionalidad de 'Ver Perfil' aún no implementada.");
   };
 
+  const handlePanicClick = () => {
+    alert("¡Botón de pánico presionado!");
+    // Aquí puedes agregar tu lógica para manejar el reporte
+  };
+
   return (
     <div className="main-container relative">
       {showLoginModal && (
@@ -87,17 +92,12 @@ function App() {
 
           <div id="map-container" className="bg-red-500">
             <Map onStreetSelect={handleStreetSelect} />
-           
           </div>
         </div>
 
-        <PanicButton
-          onReportSubmit={(risk) => {
-            if (selectedStreet) {
-              setSelectedStreet({ ...selectedStreet, risk });
-            }
-          }}
-        />
+        {logueado && (
+          <PanicButton onClick={handlePanicClick} />
+        )}
       </div>
     </div>
   );

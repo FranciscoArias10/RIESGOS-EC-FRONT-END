@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import IncidentsChart from "./Incidentschart";
+import IncidentsChart from "../charts/Incidentschart";
 
 function StreetDetails({ street }) {
   const [riskFactors, setRiskFactors] = useState([]);

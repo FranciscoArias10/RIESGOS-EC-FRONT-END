@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import UserMenu from "./menu/UserMenu";
+import UserMenu from "../menu/UserMenu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 
@@ -30,7 +30,6 @@ function Navbar({ onLogout, isLoggedIn, onLoginClick, onProfileClick }) {
           </span>
         </div>
 
-        {/* Icono perfil alineado a la derecha */}
         <div
           className="user-profile ml-auto relative"
           ref={menuRef}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
-import Registro from "../Register/Registro";
+import Registro from "../register/Registro";
 import Input from "../UI/Input";
 import Botones from "../UI/Botones";
 import Card from "../UI/Card";  

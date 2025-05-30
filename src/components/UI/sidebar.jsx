@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import StreetDetails from "./streetDetails";
-import TopDangerousList from "./topdangerouslist";
-import { streetData } from "./streetData";
+import StreetDetails from "../map/streetDetails";
+import TopDangerousList from "../map/topdangerouslist";
+import { streetData } from "../map/streetData";
 
 function sidebar({ selectedStreet, onStreetSelect }) {
   const [searchTerm, setSearchTerm] = useState("");

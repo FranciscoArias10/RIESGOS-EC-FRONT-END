@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Input from "../UI/Input";
-import Botones from '../UI/Botones'
+import Botones from "../UI/Botones";
 const Registro = ({ onVolverLogin }) => {
   const [formData, setFormData] = useState({
     nombre: "",
