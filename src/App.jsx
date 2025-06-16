@@ -5,13 +5,15 @@ import Sidebar from "./components/UI/sidebar";
 import Map from "./components/map/map";
 import PanicButton from "./components/UI/panicmodal";
 import "./index.css";
-
+import Perfil from "./components/perfil/perfil";
 function App() {
+  const [mostrarPerfil, setMostrarPerfil] = useState(false);
   const [selectedStreet, setSelectedStreet] = useState(null);
   const [showSidebar, setShowSidebar] = useState(true);
   const [loading, setLoading] = useState(false);
   const [logueado, setLogueado] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [refreshFoto, setRefreshFoto] = useState(false); // 🔄 NUEVO
 
   useEffect(() => {
     const yaLogueado = localStorage.getItem("logueado");
@@ -24,11 +26,14 @@ function App() {
     localStorage.setItem("logueado", "true");
     setLogueado(true);
     setShowLoginModal(false);
+    setRefreshFoto((prev) => !prev); // 🔄 fuerza carga de imagen
   };
 
   const manejarLogout = () => {
     localStorage.removeItem("logueado");
     setLogueado(false);
+    setMostrarPerfil(false);
+    setRefreshFoto((prev) => !prev); // 🔄 reset avatar
   };
 
   const handleStreetSelect = (street) => {
@@ -48,28 +53,47 @@ function App() {
   };
 
   const verPerfil = () => {
-    alert("Funcionalidad de 'Ver Perfil' aún no implementada.");
+    setMostrarPerfil(true);
+  };
+
+  const cerrarPerfil = () => {
+    setMostrarPerfil(false);
   };
 
   const handlePanicClick = () => {
     alert("¡Botón de pánico presionado!");
-    // Aquí puedes agregar tu lógica para manejar el reporte
   };
 
   return (
     <div className="main-container relative">
+      {/* Modal de Login */}
       {showLoginModal && (
         <div className="login-overlay">
           <Login onLogin={manejarLogin} />
         </div>
       )}
 
-      <div className={`app-content ${showLoginModal ? "blurred" : ""}`}>
+      {/* Modal de Perfil */}
+      {mostrarPerfil && (
+        <div className="login-overlay">
+          <Perfil
+            onBack={cerrarPerfil}
+            onPerfilActualizado={() => setRefreshFoto((prev) => !prev)} // ✅ para actualizar avatar
+          />
+        </div>
+      )}
+
+      <div
+        className={`app-content ${
+          showLoginModal || mostrarPerfil ? "blurred" : ""
+        }`}
+      >
         <Navbar
           onLogout={manejarLogout}
           isLoggedIn={logueado}
           onLoginClick={abrirLoginDesdeMenu}
           onProfileClick={verPerfil}
+          refreshFoto={refreshFoto} // ✅ pasamos prop
         />
 
         <div className="content-area">
@@ -95,7 +119,7 @@ function App() {
           </div>
         </div>
 
-        {logueado && (
+        {logueado && !mostrarPerfil && (
           <PanicButton onClick={handlePanicClick} />
         )}
       </div>
