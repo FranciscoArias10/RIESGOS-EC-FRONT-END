@@ -1,6 +1,6 @@
 # Riesgos EC
 
-## Authors
+## Autores
 - [Francisco Steven Arias Perez](https://github.com/FranciscoArias10)
 - [Andy Bryan Chafla Guaman](https://github.com/Andy-1402)
 - [Darly Douglas Farias Mendoza](https://github.com/Darly23)
