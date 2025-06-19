@@ -11,3 +11,7 @@ export default function Botones({ children, onClick, type = "button", className 
     </button>
   );
 }
+
+
+
+

@@ -110,12 +110,12 @@ function PanicModal({ onReportSubmit }) {
       >
         <i className="fas fa-exclamation-circle"></i>
       </button>
-
+        
       {showModal && (
         <Card maxWidth="max-w-sm">
           {showSuccess ? (
             <div className="text-center text-white text-lg font-semibold py-8">
-              Reporte enviado correctamente
+              Reporte enviado correctamente ✓ 
             </div>
           ) : (
             <>

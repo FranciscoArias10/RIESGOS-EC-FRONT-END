@@ -33,6 +33,7 @@ const Perfil = ({ onBack, onPerfilActualizado }) => {
   });
 
   const [modoEdicion, setModoEdicion] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
     axios.get("http://localhost:8000/api/csrf/", { withCredentials: true });
@@ -64,7 +65,18 @@ const Perfil = ({ onBack, onPerfilActualizado }) => {
     e.preventDefault();
     const formData = new FormData();
     for (const key in datos) {
-      if (key !== "foto_url" && datos[key] !== null && datos[key] !== "") {
+      if (key === "foto_url") continue;
+
+      // Solo agregamos la foto si el usuario subió una nueva
+      if (key === "foto") {
+        if (datos[key] instanceof File) {
+          formData.append(key, datos[key]);
+        }
+        continue;
+      }
+
+      // Para los demás campos, solo si tienen valor
+      if (datos[key] !== null && datos[key] !== "") {
         formData.append(key, datos[key]);
       }
     }
@@ -78,8 +90,9 @@ const Perfil = ({ onBack, onPerfilActualizado }) => {
         withCredentials: true,
       });
 
-      alert("Perfil actualizado correctamente");
+      setShowSuccess(true);
       setModoEdicion(false);
+      setTimeout(() => setShowSuccess(false), 3000);
 
       if (typeof onPerfilActualizado === "function") {
         onPerfilActualizado(); // ✅ notifica al App que refresque avatar
@@ -105,6 +118,11 @@ const Perfil = ({ onBack, onPerfilActualizado }) => {
         >
           <FontAwesomeIcon icon={faArrowLeft} />
         </button>
+        {showSuccess && (
+          <div className="mb-4 bg-green-600 text-white text-center px-4 py-2 rounded shadow-md font-semibold">
+            ✓ Perfil actualizado correctamente
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex flex-col items-center justify-center mb-6">
@@ -121,7 +139,7 @@ const Perfil = ({ onBack, onPerfilActualizado }) => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm mb-1">Nombre:</label>
+              <label className="block text-sm mb-1">Nombres:</label>
               <input
                 name="first_name"
                 value={datos.first_name}
@@ -136,7 +154,7 @@ const Perfil = ({ onBack, onPerfilActualizado }) => {
             </div>
 
             <div>
-              <label className="block text-sm mb-1">Apellido:</label>
+              <label className="block text-sm mb-1">Apellidos:</label>
               <input
                 name="last_name"
                 value={datos.last_name}
@@ -196,34 +214,27 @@ const Perfil = ({ onBack, onPerfilActualizado }) => {
                 }`}
               />
             </div>
-
-            <div>
-              <label className="block text-sm mb-1">Nueva contraseña:</label>
-              <input
-                type="password"
-                name="password"
-                value={datos.password}
-                onChange={handleChange}
-                readOnly={!modoEdicion}
-                className={`w-full p-2 rounded border ${
-                  modoEdicion
-                    ? "bg-white text-black"
-                    : "bg-gray-100 text-gray-500"
-                }`}
-              />
-            </div>
           </div>
 
           {modoEdicion && (
             <>
               <div>
-                <label className="block text-sm mb-1">Foto de perfil:</label>
+                <label className="block text-sm mb-2 text-white">
+                  Cambiar foto de perfil:
+                </label>
+                <label
+                  htmlFor="foto-upload"
+                  className="text-white text-3xl cursor-pointer hover:text-gray-300"
+                >
+                  +
+                </label>
                 <input
+                  id="foto-upload"
                   type="file"
                   name="foto"
                   accept="image/*"
                   onChange={handleChange}
-                  className="text-white"
+                  className="hidden"
                 />
               </div>
 
