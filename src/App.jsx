@@ -13,7 +13,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [logueado, setLogueado] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [refreshFoto, setRefreshFoto] = useState(false); // 🔄 NUEVO
+  const [refreshFoto, setRefreshFoto] = useState(false); // NUEVO
 
   useEffect(() => {
     const yaLogueado = localStorage.getItem("logueado");
@@ -26,14 +26,14 @@ function App() {
     localStorage.setItem("logueado", "true");
     setLogueado(true);
     setShowLoginModal(false);
-    setRefreshFoto((prev) => !prev); // 🔄 fuerza carga de imagen
+    setRefreshFoto((prev) => !prev); //  fuerza carga de imagen
   };
 
   const manejarLogout = () => {
     localStorage.removeItem("logueado");
     setLogueado(false);
     setMostrarPerfil(false);
-    setRefreshFoto((prev) => !prev); // 🔄 reset avatar
+    setRefreshFoto((prev) => !prev); // reset avatar
   };
 
   const handleStreetSelect = (street) => {
@@ -78,7 +78,7 @@ function App() {
         <div className="login-overlay">
           <Perfil
             onBack={cerrarPerfil}
-            onPerfilActualizado={() => setRefreshFoto((prev) => !prev)} // ✅ para actualizar avatar
+            onPerfilActualizado={() => setRefreshFoto((prev) => !prev)} //  para actualizar avatar
           />
         </div>
       )}
@@ -93,7 +93,7 @@ function App() {
           isLoggedIn={logueado}
           onLoginClick={abrirLoginDesdeMenu}
           onProfileClick={verPerfil}
-          refreshFoto={refreshFoto} // ✅ pasamos prop
+          refreshFoto={refreshFoto} //  pasamos prop
         />
 
         <div className="content-area">
@@ -114,7 +114,7 @@ function App() {
             />
           )}
 
-          <div id="map-container" className="bg-red-500">
+          <div id="map-container" className="bg-gray-500">
             <Map onStreetSelect={handleStreetSelect} />
           </div>
         </div>

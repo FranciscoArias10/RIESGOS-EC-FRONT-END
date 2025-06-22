@@ -96,10 +96,3 @@ function Navbar({
 
 export default Navbar;
 
-// App.js (fragmento de ejemplo)
-// const [refreshFoto, setRefreshFoto] = useState(false);
-// <Navbar isLoggedIn={isLoggedIn} refreshFoto={refreshFoto} ... />
-// <Perfil setRefreshFoto={setRefreshFoto} ... />
-
-// Perfil.jsx (al final del handleSubmit)
-// if (setRefreshFoto) setRefreshFoto(prev => !prev);

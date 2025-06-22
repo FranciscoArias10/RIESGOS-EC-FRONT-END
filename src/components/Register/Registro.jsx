@@ -1,9 +1,15 @@
+// Importaciones
 import React, { useState } from "react";
 import Input from "../UI/Input";
 import Botones from "../UI/Botones";
 import Card from "../UI/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faCheckCircle,
+  faEye,
+  faEyeSlash,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Registro = ({ onVolverLogin }) => {
   const [formData, setFormData] = useState({
@@ -17,15 +23,39 @@ const Registro = ({ onVolverLogin }) => {
   });
 
   const [error, setError] = useState("");
-  const [registroExitoso, setRegistroExitoso] = useState(false); // NUEVO
+  const [registroExitoso, setRegistroExitoso] = useState(false);
+  const [mostrarPassword, setMostrarPassword] = useState(false);
+  const [mostrarConfirmPassword, setMostrarConfirmPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState(""); // 👈 para mostrar mensaje personalizado
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
+
     setError("");
+
+    // Validación de contraseña mientras escribe
+    if (name === "password") {
+      validarContrasena(value);
+    }
+  };
+
+  const validarContrasena = (password) => {
+    if (password.length < 8) {
+      setPasswordError("La contraseña debe tener al menos 8 caracteres");
+    } else if (!/[A-Z]/.test(password)) {
+      setPasswordError("Debe incluir al menos una letra mayúscula");
+    } else if (!/[a-z]/.test(password)) {
+      setPasswordError("Debe incluir al menos una letra minúscula");
+    } else if (!/[0-9]/.test(password)) {
+      setPasswordError("Debe incluir al menos un número");
+    } else {
+      setPasswordError(""); // ✔️ segura
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -33,6 +63,11 @@ const Registro = ({ onVolverLogin }) => {
 
     if (formData.password !== formData.confirmPassword) {
       setError("Las contraseñas no coinciden");
+      return;
+    }
+
+    if (passwordError) {
+      setError("La contraseña no es segura");
       return;
     }
 
@@ -57,7 +92,7 @@ const Registro = ({ onVolverLogin }) => {
       const data = await response.json();
 
       if (response.ok) {
-        setRegistroExitoso(true); // ✅ Mostrar tarjeta de éxito
+        setRegistroExitoso(true);
         setTimeout(() => {
           setRegistroExitoso(false);
           onVolverLogin();
@@ -121,18 +156,57 @@ const Registro = ({ onVolverLogin }) => {
             placeholder="Correo electrónico"
             onChange={handleChange}
           />
-          <Input
-            type="password"
-            name="password"
-            placeholder="Contraseña"
-            onChange={handleChange}
-          />
-          <Input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirmar contraseña"
-            onChange={handleChange}
-          />
+
+          {/* Contraseña */}
+          {/* Contraseña */}
+          <div>
+            <div className="relative">
+              <Input
+                type={mostrarPassword ? "text" : "password"}
+                name="password"
+                placeholder="Contraseña"
+                onChange={handleChange}
+                className="w-full pr-12 rounded-full p-2 bg-gray-200 text-gray-700 placeholder-gray-500"
+              />
+              <button
+                type="button"
+                onClick={() => setMostrarPassword(!mostrarPassword)}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2"
+              >
+                <FontAwesomeIcon
+                  icon={mostrarPassword ? faEyeSlash : faEye}
+                  style={{ color: "#000000" }}
+                />
+              </button>
+            </div>
+
+            {/* Mensaje de error fuera del contenedor relative para no afectar el botón */}
+            {passwordError && (
+              <p className="text-red-500 text-xs mt-1 pl-2">{passwordError}</p>
+            )}
+          </div>
+
+          {/* Confirmar contraseña */}
+          <div className="relative">
+            <Input
+              type={mostrarConfirmPassword ? "text" : "password"}
+              name="confirmPassword"
+              placeholder="Confirmar contraseña"
+              onChange={handleChange}
+              className="w-full pr-12 rounded-full p-2 bg-gray-200 text-gray-700 placeholder-gray-500"
+            />
+            <button
+              type="button"
+              onClick={() => setMostrarConfirmPassword(!mostrarConfirmPassword)}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2"
+            >
+              <FontAwesomeIcon
+                icon={mostrarConfirmPassword ? faEyeSlash : faEye}
+                style={{ color: "#000000" }}
+              />
+            </button>
+          </div>
+
           <Input
             type="date"
             name="fecha_nac"

@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faCheckCircle,
+  faEye,
+  faEyeSlash,
+} from "@fortawesome/free-solid-svg-icons";
 import Registro from "../Register/Registro";
 import Input from "../UI/Input";
 import Botones from "../UI/Botones";
@@ -32,6 +37,10 @@ const Login = ({ onLogin, onBack }) => {
   const [error, setError] = useState("");
   const [mostrarRegistro, setMostrarRegistro] = useState(false);
   const [recuperacionPaso, setRecuperacionPaso] = useState(0);
+
+  const [mostrarLoginPass, setMostrarLoginPass] = useState(false);
+  const [mostrarNuevaPass, setMostrarNuevaPass] = useState(false);
+  const [mostrarConfirmPass, setMostrarConfirmPass] = useState(false);
 
   useEffect(() => {
     fetch("http://localhost:8000/api/csrf/", {
@@ -174,29 +183,40 @@ const Login = ({ onLogin, onBack }) => {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/30">
         <Card>
-          <h1 className="text-2xl font-bold mb-4">
-            Cambio de contraseña exitoso
-          </h1>
-          <FontAwesomeIcon
-            icon={faCheckCircle}
-            className="text-6xl text-pink-500"
-          />
+          <h1 className="text-2xl font-bold mb-4">Cambio de contraseña exitoso</h1>
+          <FontAwesomeIcon icon={faCheckCircle} className="text-6xl" style={{ color: "#F43F5E" }} />
         </Card>
       </div>
     );
   }
+
+  const renderPasswordInput = (name, value, onChange, isVisible, toggleVisibility, placeholder) => (
+    <div className="relative">
+      <Input
+        type={isVisible ? "text" : "password"}
+        placeholder={placeholder}
+        name={name}
+        value={value}
+        onChange={onChange}
+        className="w-full pr-12 rounded-full p-2 bg-gray-200 text-gray-700 placeholder-gray-500"
+      />
+      <button
+        type="button"
+        onClick={toggleVisibility}
+        className="absolute right-4 top-1/2 transform -translate-y-1/2"
+      >
+        <FontAwesomeIcon icon={isVisible ? faEyeSlash : faEye} style={{ color: "000000" }} />
+      </button>
+    </div>
+  );
 
   const renderContent = () => {
     switch (recuperacionPaso) {
       case 1:
         return (
           <>
-            <h1 className="text-2xl font-bold mb-2 text-center">
-              Recuperar cuenta
-            </h1>
-            <p className="text-sm text-center mb-4">
-              Ingresa tu correo electrónico
-            </p>
+            <h1 className="text-2xl font-bold mb-2 text-center">Recuperar cuenta</h1>
+            <p className="text-sm text-center mb-4">Ingresa tu correo electrónico</p>
             <form onSubmit={handleRecuperacion} className="flex flex-col gap-4">
               <Input
                 type="email"
@@ -205,9 +225,7 @@ const Login = ({ onLogin, onBack }) => {
                 value={formData.correo}
                 onChange={handleChange}
               />
-              {error && (
-                <p className="text-red-500 text-sm text-center">{error}</p>
-              )}
+              {error && <p className="text-red-500 text-sm text-center">{error}</p>}
               <Botones type="submit">Siguiente</Botones>
             </form>
           </>
@@ -215,12 +233,8 @@ const Login = ({ onLogin, onBack }) => {
       case 2:
         return (
           <>
-            <h1 className="text-2xl font-bold mb-2 text-center">
-              Verificación
-            </h1>
-            <p className="text-sm text-green-400 text-center mb-2">
-              Código enviado a tu correo
-            </p>
+            <h1 className="text-2xl font-bold mb-2 text-center">Verificación</h1>
+            <p className="text-sm text-green-400 text-center mb-2">Código enviado a tu correo</p>
             <form onSubmit={handleCodigo} className="flex flex-col gap-4">
               <Input
                 type="text"
@@ -229,9 +243,7 @@ const Login = ({ onLogin, onBack }) => {
                 value={formData.codigo}
                 onChange={handleChange}
               />
-              {error && (
-                <p className="text-red-500 text-sm text-center">{error}</p>
-              )}
+              {error && <p className="text-red-500 text-sm text-center">{error}</p>}
               <Botones type="submit">Siguiente</Botones>
             </form>
           </>
@@ -239,31 +251,15 @@ const Login = ({ onLogin, onBack }) => {
       case 3:
         return (
           <>
-            <h1 className="text-2xl font-bold mb-2 text-center">
-              Nueva contraseña
-            </h1>
+            <h1 className="text-2xl font-bold mb-2 text-center">Nueva contraseña</h1>
             <ul className="text-sm list-disc list-inside mb-2">
               <li>Al menos una mayúscula A-Z</li>
               <li>Al menos un número 0-9</li>
             </ul>
             <form onSubmit={handleNuevaPass} className="flex flex-col gap-4">
-              <Input
-                type="password"
-                placeholder="Nueva contraseña"
-                name="nuevaPass"
-                value={formData.nuevaPass}
-                onChange={handleChange}
-              />
-              <Input
-                type="password"
-                placeholder="Confirmar nueva contraseña"
-                name="confirmPass"
-                value={formData.confirmPass}
-                onChange={handleChange}
-              />
-              {error && (
-                <p className="text-red-500 text-sm text-center">{error}</p>
-              )}
+              {renderPasswordInput("nuevaPass", formData.nuevaPass, handleChange, mostrarNuevaPass, () => setMostrarNuevaPass(!mostrarNuevaPass), "Nueva contraseña")}
+              {renderPasswordInput("confirmPass", formData.confirmPass, handleChange, mostrarConfirmPass, () => setMostrarConfirmPass(!mostrarConfirmPass), "Confirmar nueva contraseña")}
+              {error && <p className="text-red-500 text-sm text-center">{error}</p>}
               <Botones type="submit">Cambiar contraseña</Botones>
             </form>
           </>
@@ -271,12 +267,8 @@ const Login = ({ onLogin, onBack }) => {
       default:
         return (
           <>
-            <h1 className="text-3xl font-bold mb-2 text-center">
-              Iniciar sesión
-            </h1>
-            <p className="text-sm text-center mb-6">
-              para continuar a Riesgos Ec.
-            </p>
+            <h1 className="text-3xl font-bold mb-2 text-center">Iniciar sesión</h1>
+            <p className="text-sm text-center mb-6">para continuar a Riesgos Ec.</p>
             <form onSubmit={handleLogin} className="flex flex-col gap-4">
               <Input
                 type="email"
@@ -285,21 +277,13 @@ const Login = ({ onLogin, onBack }) => {
                 value={formData.correo}
                 onChange={handleChange}
               />
-              <Input
-                type="password"
-                placeholder="Contraseña"
-                name="contrasena"
-                value={formData.contrasena}
-                onChange={handleChange}
-              />
-              {error && (
-                <p className="text-red-500 text-sm text-center">{error}</p>
-              )}
+              {renderPasswordInput("contrasena", formData.contrasena, handleChange, mostrarLoginPass, () => setMostrarLoginPass(!mostrarLoginPass), "Contraseña")}
+              {error && <p className="text-red-500 text-sm text-center">{error}</p>}
               <Botones type="submit">Ingresar</Botones>
             </form>
             <div className="mt-4 text-center text-sm">
               <p>
-                ¿No tienes cuenta?{" "}
+                ¿No tienes cuenta? {" "}
                 <span
                   className="cursor-pointer text-pink-400 hover:underline"
                   onClick={() => setMostrarRegistro(true)}

@@ -53,7 +53,7 @@ export default function Map({ onStreetSelect }) {
   };
 
   return (
-    <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+    <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY} >
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
